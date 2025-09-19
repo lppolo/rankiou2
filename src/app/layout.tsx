@@ -19,21 +19,69 @@ export const metadata: Metadata = {
 
 import Link from 'next/link';
 
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // Simulação: checar se usuário é admin (depois integrar com Supabase)
+  const isAdmin = false;
+
   return (
     <html lang="pt-br">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white font-sans min-h-screen`}>
-        <header className="w-full flex justify-between items-center px-8 py-4 bg-gray-900 shadow">
-          <Link href="/" className="text-2xl font-extrabold text-yellow-400">RANKIOU</Link>
-          <nav className="flex gap-6">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white font-sans min-h-screen relative`}>
+        {/* Header principal */}
+        <header className="w-full flex flex-col md:flex-row justify-between items-center px-4 md:px-8 py-4 bg-gray-900 shadow z-20">
+          <div className="flex items-center gap-4">
+            <Link href="/" className="text-2xl font-extrabold text-yellow-400">RANKIOU</Link>
+            {isAdmin && (
+              <Link href="/admin" title="Painel Admin" className="text-xl ml-2">🛡️</Link>
+            )}
+          </div>
+          <nav className="flex flex-wrap gap-4 md:gap-6 items-center mt-2 md:mt-0">
             <Link href="/" className="hover:text-yellow-300">Início</Link>
-            <Link href="/login" className="hover:text-yellow-300">Login</Link>
+            <Link href="/rankards" className="hover:text-yellow-300">Rankards</Link>
+            <Link href="/acompanhar" className="hover:text-yellow-300">Acompanhar</Link>
+            <Link href="/como-funciona" className="hover:text-yellow-300">Como Funciona</Link>
+            <Link href="/faq" className="hover:text-yellow-300">FAQ</Link>
+            <Link href="/contato" className="hover:text-yellow-300">Contato</Link>
+            <Link href="/criar" className="bg-yellow-400 text-black px-3 py-1 rounded font-bold hover:bg-yellow-300">Criar Enquete</Link>
             <Link href="/profile" className="hover:text-yellow-300">Perfil</Link>
+            <Link href="/login" className="hover:text-yellow-300">Login</Link>
           </nav>
+          {/* Ícone de pontos e notificações */}
+          <div className="flex items-center gap-4 ml-4">
+            <span className="flex items-center gap-1 bg-gray-800 px-2 py-1 rounded text-yellow-300 font-bold"><span>💰</span> <span>0</span></span>
+            <span className="text-xl">🔔</span>
+          </div>
         </header>
+
+        {/* Barra de filtros persistente */}
+        <div className="w-full bg-gray-800 flex flex-wrap gap-2 md:gap-6 items-center px-4 py-2 sticky top-0 z-10 border-b border-gray-700">
+          <button className="px-3 py-1 rounded bg-blue-600 text-white font-bold hover:bg-blue-500">🌍 Mundo</button>
+          <button className="px-3 py-1 rounded bg-green-600 text-white font-bold hover:bg-green-500">🏙️ Local</button>
+          <button className="px-3 py-1 rounded bg-pink-600 text-white font-bold hover:bg-pink-500">🎉 Rolê</button>
+          {/* Filtros avançados (mock) */}
+          <select className="bg-gray-900 text-white px-2 py-1 rounded border border-gray-700">
+            <option>Mais Recentes</option>
+            <option>Mais Votadas</option>
+          </select>
+          <select className="bg-gray-900 text-white px-2 py-1 rounded border border-gray-700">
+            <option>Todas Categorias</option>
+            <option>Esportes</option>
+            <option>Filmes & Séries</option>
+            <option>Comida</option>
+            <option>Eventos</option>
+          </select>
+          <input type="text" placeholder="Buscar..." className="bg-gray-900 text-white px-2 py-1 rounded border border-gray-700 w-32" />
+        </div>
+
+        {/* Main content */}
         <main className="w-full max-w-4xl mx-auto py-8 px-4">
           {children}
         </main>
+
+        {/* Botão flutuante para criar enquete (mobile) */}
+        <Link href="/criar" className="fixed bottom-6 right-6 md:hidden bg-yellow-400 text-black rounded-full shadow-lg w-16 h-16 flex items-center justify-center text-3xl font-extrabold z-30">+</Link>
+
+        {/* Footer */}
         <footer className="w-full text-center py-6 text-gray-500 text-sm mt-12">
           &copy; 2025 Rankiou. Todos os direitos reservados.
         </footer>
