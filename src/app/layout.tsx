@@ -18,6 +18,9 @@ export const metadata: Metadata = {
 };
 
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+const FilterBar = dynamic(()=>import("@/src/components/FilterBar"),{ ssr:false });
+const BottomNav = dynamic(()=>import("@/src/components/BottomNav"),{ ssr:false });
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -54,36 +57,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </header>
 
         {/* Barra de filtros persistente */}
-        <div className="w-full bg-gray-800 flex flex-wrap gap-2 md:gap-6 items-center px-4 py-2 sticky top-0 z-10 border-b border-gray-700">
-          <button className="px-3 py-1 rounded bg-blue-600 text-white font-bold hover:bg-blue-500">🌍 Mundo</button>
-          <button className="px-3 py-1 rounded bg-green-600 text-white font-bold hover:bg-green-500">🏙️ Local</button>
-          <button className="px-3 py-1 rounded bg-pink-600 text-white font-bold hover:bg-pink-500">🎉 Rolê</button>
-          {/* Filtros avançados (mock) */}
-          <select className="bg-gray-900 text-white px-2 py-1 rounded border border-gray-700">
-            <option>Mais Recentes</option>
-            <option>Mais Votadas</option>
-          </select>
-          <select className="bg-gray-900 text-white px-2 py-1 rounded border border-gray-700">
-            <option>Todas Categorias</option>
-            <option>Esportes</option>
-            <option>Filmes & Séries</option>
-            <option>Comida</option>
-            <option>Eventos</option>
-          </select>
-          <input type="text" placeholder="Buscar..." className="bg-gray-900 text-white px-2 py-1 rounded border border-gray-700 w-32" />
-        </div>
+        <FilterBar />
 
         {/* Main content */}
         <main className="w-full max-w-4xl mx-auto py-8 px-4">
           {children}
         </main>
 
-        {/* Botão flutuante para criar enquete (mobile) */}
-        <Link href="/criar" className="fixed bottom-6 right-6 md:hidden bg-yellow-400 text-black rounded-full shadow-lg w-16 h-16 flex items-center justify-center text-3xl font-extrabold z-30">+</Link>
+  {/* Navegação inferior mobile */}
+  <BottomNav />
 
         {/* Footer */}
-        <footer className="w-full text-center py-6 text-gray-500 text-sm mt-12">
-          &copy; 2025 Rankiou. Todos os direitos reservados.
+        <footer className="w-full text-center py-10 text-gray-400 text-sm mt-16 border-t border-gray-800">
+          <div className="flex gap-6 justify-center mb-3">
+            <Link href="/termos" className="hover:text-yellow-300">Termos de Uso</Link>
+            <Link href="/privacidade" className="hover:text-yellow-300">Política de Privacidade</Link>
+          </div>
+          <div>&copy; 2025 Rankiou. Todos os direitos reservados.</div>
         </footer>
       </body>
     </html>

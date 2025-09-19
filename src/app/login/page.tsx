@@ -3,27 +3,22 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-	process.env.NEXT_PUBLIC_SUPABASE_URL!,
-	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from "../../lib/supabaseClient";
+import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 
 export default function LoginPage() {
 	const router = useRouter();
 
-	useEffect(() => {
-		const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-			if (session && session.user) {
-				router.push("/profile");
-			}
-		});
-		// Cleanup
-		return () => {
-			authListener.subscription.unsubscribe();
-		};
-	}, [router]);
+		useEffect(() => {
+			const { data } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
+				if (session && session.user) {
+					router.push("/profile");
+				}
+			});
+			return () => {
+				data.subscription.unsubscribe();
+			};
+		}, [router]);
 
 	const handleLogin = async () => {
 		await supabase.auth.signInWithOAuth({
