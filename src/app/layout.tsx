@@ -18,9 +18,9 @@ export const metadata: Metadata = {
 };
 
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-const FilterBar = dynamic(()=>import("@/src/components/FilterBar"),{ ssr:false });
-const BottomNav = dynamic(()=>import("@/src/components/BottomNav"),{ ssr:false });
+import FilterBar from "../components/FilterBar";
+import BottomNav from "../components/BottomNav";
+import PointsBadge from "../components/PointsBadge";
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -51,7 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </nav>
           {/* Ícone de pontos e notificações */}
           <div className="flex items-center gap-4 ml-4">
-            <span className="flex items-center gap-1 bg-gray-800 px-2 py-1 rounded text-yellow-300 font-bold"><span>💰</span> <span>0</span></span>
+            <PointsBadge />
             <span className="text-xl">🔔</span>
           </div>
         </header>
